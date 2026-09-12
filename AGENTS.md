@@ -10,9 +10,10 @@
 - Do not add temporary roadmaps, migration notes, generated research, or other files intended for
   deletion after the refactor. Git history preserves transitional context.
 
-## Working branch and commits
+## Branches and commits
 
-- Keep all modernization work on `refactor/roll-or-hold` until the owner authorizes integration.
+- Keep `master` deployable and use focused branches for new work unless the owner explicitly
+  requests another workflow.
 - Never commit without explicit authorization after the owner has reviewed the current changes.
 - A prior authorization does not cover edits made after that review.
 - Write commit messages in English and follow Conventional Commits.
@@ -94,7 +95,6 @@
   mobile and desktop widths in browser tests.
 - Run the complete repository check, production build, and relevant browser tests before handoff.
 - Publish only the verified `dist/` artifact through GitHub Actions.
-- After the repository is renamed, configure the Vite base path and canonical metadata for
-  `/roll-or-hold/`.
-- When the production application is ready, add its GitHub Pages URL and representative desktop
-  and mobile screenshots to `README.md`.
+- Keep the Vite base path and canonical metadata configured for `/roll-or-hold/`.
+- Keep the production GitHub Pages URL and representative desktop and mobile screenshots in
+  `README.md`.

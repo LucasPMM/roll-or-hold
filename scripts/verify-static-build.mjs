@@ -3,12 +3,14 @@ import { join } from 'node:path'
 
 const distributionDirectory = join(process.cwd(), 'dist')
 const indexHtml = readFileSync(join(distributionDirectory, 'index.html'), 'utf8')
+const faviconSvg = readFileSync(join(distributionDirectory, 'favicon.svg'), 'utf8')
 
 const requiredFragments = [
   'id="app"',
   'Roll or Hold',
-  '/roll-or-hold/favicon.ico?v=3',
-  '/roll-or-hold/favicon.svg',
+  'https://lucaspmm.github.io/roll-or-hold/',
+  '/roll-or-hold/favicon.ico?v=4',
+  '/roll-or-hold/favicon.svg?v=4',
   '/roll-or-hold/site.webmanifest',
   '/roll-or-hold/assets/',
 ]
@@ -28,6 +30,10 @@ if (missingFiles.length > 0) {
 
 if (indexHtml.includes('images/back.jpg') || indexHtml.includes('images/dice-')) {
   throw new Error('The static build contains a legacy raster game asset.')
+}
+
+if (/<rect[^>]+width="64"[^>]+height="64"/.test(faviconSvg)) {
+  throw new Error('The favicon contains an opaque full-canvas background.')
 }
 
 console.log('Static build verification passed.')

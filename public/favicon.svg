@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <title>Roll or Hold</title>
-  <rect width="64" height="64" rx="18" fill="#ff5065" />
   <g transform="rotate(-8 25 28)">
     <rect x="9" y="12" width="31" height="31" rx="8" fill="#fff" stroke="#0e0f10" stroke-width="3" />
     <circle cx="18" cy="21" r="2.8" fill="#0e0f10" />

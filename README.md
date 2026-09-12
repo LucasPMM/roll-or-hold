@@ -1,8 +1,12 @@
 # Roll or Hold
 
 Roll or Hold is a local two-player dice game about balancing risk and reward. It is a small,
-static Preact application prepared for GitHub Pages while preserving the complete rule set from
+static Preact application deployed on GitHub Pages while preserving the complete rule set from
 the original JavaScript exercise.
+
+## Play
+
+[Play Roll or Hold on GitHub Pages](https://lucaspmm.github.io/roll-or-hold/)
 
 ## Preview
 
@@ -105,14 +109,13 @@ pnpm preview
 ```
 
 The build output is written to `dist/` and uses `/roll-or-hold/` as its GitHub Pages project path.
-The GitHub Pages workflow deploys the verified `dist/` artifact from `master`. The production URL
-will be added after the repository has been renamed and the first deployment has completed.
+The GitHub Pages workflow deploys the verified `dist/` artifact from `master` to
+[lucaspmm.github.io/roll-or-hold](https://lucaspmm.github.io/roll-or-hold/).
 
 ## Development policy
 
-All modernization work is isolated on `refactor/roll-or-hold` until it has been reviewed. Source
-code, code comments, test names, technical documentation, and commit messages are written in
-English. Commits follow Conventional Commits and are created only after explicit review and
+Source code, code comments, test names, technical documentation, and commit messages are written
+in English. Commits follow Conventional Commits and are created only after explicit review and
 authorization.
 
 See `AGENTS.md` for the maintained engineering rules.

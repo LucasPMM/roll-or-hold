@@ -2,6 +2,8 @@
   "name": "Roll or Hold",
   "short_name": "Roll or Hold",
   "description": "A local two-player dice game about balancing risk and reward.",
+  "start_url": "./",
+  "scope": "./",
   "icons": [
     {
       "src": "favicon.svg",
