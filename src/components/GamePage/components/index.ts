@@ -1,0 +1,6 @@
+export { AppHeader } from './AppHeader'
+export { GameBoard } from './GameBoard'
+export { GameControls } from './GameControls'
+export { GameRules } from './GameRules'
+export { GameStatus } from './GameStatus'
+export { NewGameForm } from './NewGameForm'

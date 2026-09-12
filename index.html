@@ -1,46 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
-        <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
-        <link type="text/css" rel="stylesheet" href="css/style.css">
-        
-        <title>Pig Game</title>
-    </head>
-
-    <body>
-        <div class="wrapper clearfix">
-            <div class="player-0-panel active">
-                <div class="player-name" id="name-0">Player 1</div>
-                <div class="player-score" id="score-0">43</div>
-                <div class="player-current-box">
-                    <div class="player-current-label">Current</div>
-                    <div class="player-current-score" id="current-0">11</div>
-                </div>
-            </div>
-            
-            <div class="player-1-panel">
-                <div class="player-name" id="name-1">Player 2</div>
-                <div class="player-score" id="score-1">72</div>
-                <div class="player-current-box">
-                    <div class="player-current-label">Current</div>
-                    <div class="player-current-score" id="current-1">0</div>
-                </div>
-            </div>
-            
-            <button class="btn-new"><i class="ion-ios-plus-outline"></i>New game</button>
-            <button class="btn-roll"><i class="ion-ios-loop"></i>Roll dice</button>
-            <button class="btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
-            
-            <input type="text" placeholder="Final score" class="final-score" />
-            
-            <img src="images/dice-5.png" alt="Dice" class="dice" id="dice-1">
-            <img src="images/dice-5.png" alt="Dice" class="dice" id="dice-2">
-
-        </div>
-        
-        <!--<script src="js/app.js"></script> -->
-        <script src="js/challenges.js"></script>
-    </body>
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Roll or Hold is a local two-player dice game about balancing risk and reward."
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="%BASE_URL%favicon.ico?v=3" sizes="32x32" />
+    <link rel="icon" href="%BASE_URL%favicon.svg?v=3" sizes="any" type="image/svg+xml" />
+    <link rel="shortcut icon" href="%BASE_URL%favicon.ico?v=3" />
+    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Roll or Hold" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="pt_BR" />
+    <meta property="og:title" content="Roll or Hold" />
+    <meta
+      property="og:description"
+      content="A local two-player dice game about balancing risk and reward."
+    />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Roll or Hold" />
+    <meta
+      name="twitter:description"
+      content="A local two-player dice game about balancing risk and reward."
+    />
+    <script>
+      (() => {
+        try {
+          const storedTheme = window.localStorage.getItem('roll-or-hold.theme')
+          const hasStoredTheme = storedTheme === 'light' || storedTheme === 'dark'
+          const hasDarkPreference =
+            typeof window.matchMedia === 'function' &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches
+          const systemTheme = hasDarkPreference ? 'dark' : 'light'
+          document.documentElement.dataset.theme = hasStoredTheme ? storedTheme : systemTheme
+        } catch (error) {
+          console.warn('[Roll or Hold] Unable to restore the saved theme.', error)
+          document.documentElement.dataset.theme = 'light'
+        }
+      })()
+    </script>
+    <title>Roll or Hold</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

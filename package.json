@@ -1,0 +1,49 @@
+{
+  "name": "roll-or-hold",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.4",
+  "engines": {
+    "node": ">=24 <25",
+    "pnpm": ">=10 <11"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "preinstall": "node scripts/require-pnpm.mjs",
+    "lint": "biome lint .",
+    "format": "biome check --write .",
+    "format:check": "biome format .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "verify:build": "node scripts/verify-static-build.mjs",
+    "check": "pnpm typecheck && pnpm lint && pnpm test && pnpm format:check && pnpm build && pnpm verify:build"
+  },
+  "dependencies": {
+    "@fontsource/sora": "^5.2.6",
+    "i18next": "^25.5.2",
+    "preact": "^10.27.2"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@biomejs/biome": "^2.5.0",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@playwright/test": "^1.55.0",
+    "@preact/preset-vite": "^2.10.2",
+    "@tailwindcss/vite": "^4.3.0",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/preact": "^3.2.4",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^24.3.1",
+    "jsdom": "^26.1.0",
+    "lefthook": "^1.12.3",
+    "tailwindcss": "^4.3.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.4",
+    "vitest": "^3.2.4"
+  }
+}
