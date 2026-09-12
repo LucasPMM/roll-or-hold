@@ -1,59 +1,78 @@
-import { useEffect, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
+import { reportRecoverableError } from '@/lib/errors'
 
 export const themeStorageKey = 'roll-or-hold.theme'
-export const themePreferences = ['system', 'light', 'dark'] as const
+export const themes = ['light', 'dark'] as const
 
-export type ThemePreference = (typeof themePreferences)[number]
-type ResolvedTheme = Exclude<ThemePreference, 'system'>
+export type Theme = (typeof themes)[number]
 
-const isThemePreference = (value: string | null): value is ThemePreference =>
-  value !== null && themePreferences.some((preference) => preference === value)
+const isTheme = (value: string | null): value is Theme =>
+  value !== null && themes.some((theme) => theme === value)
 
-const getStoredTheme = (): ThemePreference => {
-  if (typeof window === 'undefined') return 'system'
+const getStoredTheme = (): Theme | null => {
+  if (typeof window === 'undefined') {
+    return null
+  }
 
   try {
     const storedTheme = window.localStorage.getItem(themeStorageKey)
-    return isThemePreference(storedTheme) ? storedTheme : 'system'
-  } catch {
-    return 'system'
+    if (isTheme(storedTheme)) {
+      return storedTheme
+    }
+    if (storedTheme !== null) {
+      window.localStorage.removeItem(themeStorageKey)
+    }
+    return null
+  } catch (error) {
+    reportRecoverableError('Unable to read the saved theme preference.', error)
+    return null
   }
 }
 
-const getSystemTheme = (): ResolvedTheme =>
+export const getSystemTheme = (): Theme =>
   typeof window.matchMedia === 'function' &&
   window.matchMedia('(prefers-color-scheme: dark)').matches
     ? 'dark'
     : 'light'
 
-const applyTheme = (preference: ThemePreference) => {
-  const resolvedTheme = preference === 'system' ? getSystemTheme() : preference
-  document.documentElement.dataset.theme = resolvedTheme
+const applyTheme = (theme: Theme) => {
+  document.documentElement.dataset.theme = theme
   document
     .querySelector<HTMLMetaElement>('meta[name="theme-color"]')
-    ?.setAttribute('content', resolvedTheme === 'dark' ? '#151617' : '#ffffff')
+    ?.setAttribute('content', theme === 'dark' ? '#151617' : '#ffffff')
 }
 
 export const useThemePreference = () => {
-  const [theme, setTheme] = useState<ThemePreference>(getStoredTheme)
+  const [initialTheme] = useState(getStoredTheme)
+  const [theme, setThemeState] = useState<Theme>(initialTheme ?? getSystemTheme)
+  const [followsSystem, setFollowsSystem] = useState(initialTheme === null)
+
+  const setTheme = useCallback((selectedTheme: Theme) => {
+    setThemeState(selectedTheme)
+    setFollowsSystem(false)
+
+    try {
+      window.localStorage.setItem(themeStorageKey, selectedTheme)
+    } catch (error) {
+      reportRecoverableError('Unable to save the theme preference.', error)
+    }
+  }, [])
 
   useEffect(() => {
     applyTheme(theme)
+  }, [theme])
 
-    try {
-      window.localStorage.setItem(themeStorageKey, theme)
-    } catch {
-      // The selected theme still works when persistence is unavailable.
+  useEffect(() => {
+    if (!followsSystem || typeof window.matchMedia !== 'function') {
+      return undefined
     }
 
-    if (theme !== 'system' || typeof window.matchMedia !== 'function') return
-
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    const handleSystemThemeChange = () => applyTheme('system')
+    const handleSystemThemeChange = () => setThemeState(getSystemTheme())
     mediaQuery.addEventListener('change', handleSystemThemeChange)
 
     return () => mediaQuery.removeEventListener('change', handleSystemThemeChange)
-  }, [theme])
+  }, [followsSystem])
 
   return { theme, setTheme } as const
 }

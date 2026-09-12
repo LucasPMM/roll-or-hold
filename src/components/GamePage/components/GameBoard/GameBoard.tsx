@@ -1,9 +1,25 @@
-import type { DiceRoll, PlayerIndex, PlayerScores } from '@/features/game'
+import type { DiceRoll, GameEvent, PlayerIndex, PlayerScores } from '@/features/game'
 import { useI18n } from '@/lib/i18n'
-import { Dice, PlayerPanel } from './components'
+import { Dice, type PlayerFeedback, PlayerPanel } from './components'
+
+const getPlayerFeedback = (event: GameEvent | null, player: PlayerIndex): PlayerFeedback => {
+  if (!event || event.player !== player) {
+    return null
+  }
+  if (event.type === 'rolled-one' || event.type === 'double-six') {
+    return 'loss'
+  }
+  if (event.type === 'won') {
+    return 'win'
+  }
+
+  return null
+}
 
 type GameBoardProps = Readonly<{
   activePlayer: PlayerIndex
+  diceAnimationKey: number
+  lastEvent: GameEvent | null
   lastRoll: DiceRoll | null
   playerNames: readonly [string, string]
   scores: PlayerScores
@@ -13,6 +29,8 @@ type GameBoardProps = Readonly<{
 
 export const GameBoard = ({
   activePlayer,
+  diceAnimationKey,
+  lastEvent,
   lastRoll,
   playerNames,
   scores,
@@ -27,6 +45,7 @@ export const GameBoard = ({
         {t('game.boardLabel')}
       </h2>
       <PlayerPanel
+        feedback={getPlayerFeedback(lastEvent, 0)}
         isActive={activePlayer === 0 && winner === null}
         isWinner={winner === 0}
         name={playerNames[0]}
@@ -34,9 +53,10 @@ export const GameBoard = ({
         turnScore={activePlayer === 0 && winner === null ? turnScore : 0}
       />
       <div class="grid place-items-center py-2 md:px-2 md:py-0">
-        <Dice roll={lastRoll} />
+        <Dice animate={lastRoll !== null} key={diceAnimationKey} roll={lastRoll} />
       </div>
       <PlayerPanel
+        feedback={getPlayerFeedback(lastEvent, 1)}
         isActive={activePlayer === 1 && winner === null}
         isWinner={winner === 1}
         name={playerNames[1]}

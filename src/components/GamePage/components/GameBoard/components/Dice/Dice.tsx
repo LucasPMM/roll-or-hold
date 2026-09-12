@@ -39,17 +39,22 @@ const pipLayouts: Record<DieValue, readonly PipPosition[]> = {
 }
 
 type DieProps = Readonly<{
+  animate: boolean
+  hasDelay?: boolean
   value: DieValue | null
 }>
 
-const Die = ({ value }: DieProps) => {
+const Die = ({ animate, hasDelay = false, value }: DieProps) => {
   const { t } = useI18n()
   const label = value ? t('dice.value', { value }) : t('dice.waiting')
+  const animationClassName = animate
+    ? `animate-dice-roll ${hasDelay ? '[animation-delay:70ms]' : ''}`
+    : ''
 
   return (
     <div
       aria-label={label}
-      class="grid size-20 shrink-0 grid-cols-3 grid-rows-3 rounded-2xl border border-border bg-surface p-3 shadow-subtle sm:size-24 sm:p-4"
+      class={`grid size-20 shrink-0 grid-cols-3 grid-rows-3 rounded-2xl border border-border bg-surface p-3 shadow-subtle will-change-transform sm:size-24 sm:p-4 ${animationClassName}`}
       role="img"
     >
       {value ? (
@@ -77,10 +82,11 @@ const Die = ({ value }: DieProps) => {
 }
 
 type DiceProps = Readonly<{
+  animate: boolean
   roll: DiceRoll | null
 }>
 
-export const Dice = ({ roll }: DiceProps) => {
+export const Dice = ({ animate, roll }: DiceProps) => {
   const { t } = useI18n()
 
   return (
@@ -89,8 +95,8 @@ export const Dice = ({ roll }: DiceProps) => {
       class="grid justify-items-center gap-4 rounded-card bg-surface-muted px-4 py-6"
     >
       <div class="flex gap-3">
-        <Die value={roll?.[0] ?? null} />
-        <Die value={roll?.[1] ?? null} />
+        <Die animate={animate} value={roll?.[0] ?? null} />
+        <Die animate={animate} hasDelay value={roll?.[1] ?? null} />
       </div>
       <figcaption class="text-center text-sm font-semibold text-muted-foreground">
         {roll ? t('dice.lastRoll', { first: roll[0], second: roll[1] }) : t('dice.waiting')}

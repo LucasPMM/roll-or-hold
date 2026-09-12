@@ -48,6 +48,9 @@
 - Give reusable library and feature folders an `index.ts` public entry point.
 - Keep files focused and prefer small named helpers, immutable state transitions, guard clauses,
   and explicit types.
+- Always use braces around conditional and loop bodies, including single-statement branches.
+- Never swallow an exception. Every caught error must be reported or translated into an explicit,
+  documented recovery path.
 
 ## Game invariants
 
@@ -65,8 +68,8 @@
   source of truth once it exists.
 - Use semantic tokens for every canvas, surface, border, foreground, accent, and interaction state.
 - Preserve equivalent hierarchy and accessible contrast in light and dark themes.
-- Detect the system color scheme on first visit, persist explicit overrides, and apply the resolved
-  theme before the first paint.
+- Follow the system color scheme until the player explicitly chooses Light or Dark, persist only
+  that explicit choice, and apply the resolved theme before the first paint.
 - Keep layouts usable from 320px through desktop widths and with text enlarged to 200 percent.
 - Respect `prefers-reduced-motion` and retain visible keyboard focus.
 - Do not restore the photographic background or raster dice assets. Render dice with semantic HTML

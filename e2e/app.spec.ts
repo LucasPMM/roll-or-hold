@@ -21,11 +21,35 @@ test('keeps the application free of horizontal overflow', async ({ page }) => {
   }
 })
 
-test('persists theme and language preferences', async ({ page }) => {
+test('uses the supported browser language without persisting an implicit choice', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window.navigator, 'languages', { value: ['pt-BR'] })
+    Object.defineProperty(window.navigator, 'language', { value: 'pt-BR' })
+  })
   await page.goto('./')
 
-  await page.getByRole('combobox', { name: 'Theme' }).selectOption('dark')
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Jogador 1, é a sua vez.' }),
+  ).toBeVisible()
+  expect(await page.evaluate(() => localStorage.getItem('roll-or-hold.locale'))).toBeNull()
+})
+
+test('persists theme and language preferences', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await page.goto('./')
+
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  expect(await page.evaluate(() => localStorage.getItem('roll-or-hold.theme'))).toBeNull()
+
+  await page.emulateMedia({ colorScheme: 'light' })
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  await page.emulateMedia({ colorScheme: 'dark' })
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+
+  await page.getByRole('combobox', { name: 'Theme' }).selectOption('light')
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
 
   await page.getByRole('combobox', { name: 'Language' }).selectOption('pt-BR')
   await expect(
@@ -33,8 +57,8 @@ test('persists theme and language preferences', async ({ page }) => {
   ).toBeVisible()
 
   await page.reload()
-  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
-  await expect(page.getByRole('combobox', { name: 'Tema' })).toHaveValue('dark')
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
+  await expect(page.getByRole('combobox', { name: 'Tema' })).toHaveValue('light')
   await expect(page.getByRole('combobox', { name: 'Idioma' })).toHaveValue('pt-BR')
 })
 

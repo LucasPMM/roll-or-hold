@@ -1,0 +1,16 @@
+{
+  "name": "Roll or Hold",
+  "short_name": "Roll or Hold",
+  "description": "A local two-player dice game about balancing risk and reward.",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "theme_color": "#ff5065",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}

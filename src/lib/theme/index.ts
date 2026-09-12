@@ -1,6 +1,7 @@
 export {
-  type ThemePreference,
-  themePreferences,
+  getSystemTheme,
+  type Theme,
   themeStorageKey,
+  themes,
   useThemePreference,
 } from './theme'

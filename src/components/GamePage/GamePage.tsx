@@ -25,7 +25,9 @@ const getStatusMessage = (
   playerNames: readonly [string, string],
   t: Translate,
 ): string => {
-  if (!event) return t('status.ready')
+  if (!event) {
+    return t('status.ready')
+  }
 
   const player = playerNames[event.player]
   if (event.type === 'roll-scored') {
@@ -61,6 +63,7 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
   const [state, dispatch] = useReducer(gameReducer, createGameState())
   const [winningScore, setWinningScore] = useState(String(defaultWinningScore))
   const [winningScoreError, setWinningScoreError] = useState<string | null>(null)
+  const [diceAnimationKey, setDiceAnimationKey] = useState(0)
   const playerNames = [t('player.one'), t('player.two')] as const
   const winnerName = state.winner === null ? null : playerNames[state.winner]
   const currentPlayerName = playerNames[state.activePlayer]
@@ -74,7 +77,13 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
     }
 
     setWinningScoreError(null)
+    setDiceAnimationKey(0)
     dispatch({ type: 'new-game', winningScore: score })
+  }
+
+  const handleRoll = () => {
+    setDiceAnimationKey((currentKey) => currentKey + 1)
+    dispatch({ type: 'roll', dice: rollDice(randomSource) })
   }
 
   return (
@@ -97,7 +106,11 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
           </div>
           <div class="mx-auto max-w-3xl">
             <p class="mb-3 text-sm font-bold text-accent-strong">{t('game.eyebrow')}</p>
-            <h1 class="font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">
+            <h1
+              class={`font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl ${
+                isWinner ? 'animate-player-win' : ''
+              }`}
+            >
               {winnerName
                 ? t('game.winnerTitle', { player: winnerName })
                 : t('game.turnTitle', { player: currentPlayerName })}
@@ -110,6 +123,8 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
 
         <GameBoard
           activePlayer={state.activePlayer}
+          diceAnimationKey={diceAnimationKey}
+          lastEvent={state.lastEvent}
           lastRoll={state.lastRoll}
           playerNames={playerNames}
           scores={state.scores}
@@ -126,7 +141,7 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
             canHold={!isWinner}
             canRoll={!isWinner}
             onHold={() => dispatch({ type: 'hold' })}
-            onRoll={() => dispatch({ type: 'roll', dice: rollDice(randomSource) })}
+            onRoll={handleRoll}
           />
           <NewGameForm
             errorMessage={winningScoreError}

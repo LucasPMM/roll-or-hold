@@ -60,14 +60,17 @@ export type RandomSource = () => number
 
 export const parseWinningScore = (candidate: string | number): number | null => {
   const value = typeof candidate === 'number' ? candidate : Number(candidate.trim())
-  if (!Number.isSafeInteger(value) || value < 1) return null
+  if (!Number.isSafeInteger(value) || value < 1) {
+    return null
+  }
   return value
 }
 
 export const createGameState = (winningScore = defaultWinningScore): GameState => {
   const parsedWinningScore = parseWinningScore(winningScore)
-  if (!parsedWinningScore)
+  if (!parsedWinningScore) {
     throw new RangeError('The winning score must be a positive whole number.')
+  }
 
   return {
     activePlayer: 0,
@@ -181,9 +184,15 @@ const applyHold = (state: GameState): GameState => {
 }
 
 export const gameReducer = (state: GameState, action: GameAction): GameState => {
-  if (action.type === 'new-game') return createGameState(action.winningScore)
-  if (state.status === 'won') return state
-  if (action.type === 'roll') return applyRoll(state, action.dice)
+  if (action.type === 'new-game') {
+    return createGameState(action.winningScore)
+  }
+  if (state.status === 'won') {
+    return state
+  }
+  if (action.type === 'roll') {
+    return applyRoll(state, action.dice)
+  }
   return applyHold(state)
 }
 

@@ -1,10 +1,11 @@
 import { createInstance } from 'i18next'
+import { reportRecoverableError } from '@/lib/errors'
 import { englishCatalog, portugueseCatalog } from './catalog'
 import { detectLocale, fallbackLocale, supportedLocales } from './locale'
 
 export const i18n = createInstance()
 
-void i18n.init({
+const initialization = i18n.init({
   lng: detectLocale(),
   fallbackLng: fallbackLocale,
   supportedLngs: supportedLocales,
@@ -19,4 +20,8 @@ void i18n.init({
     en: { translation: englishCatalog },
     'pt-BR': { translation: portugueseCatalog },
   },
+})
+
+void initialization.catch((error: unknown) => {
+  reportRecoverableError('Unable to initialize translations.', error)
 })

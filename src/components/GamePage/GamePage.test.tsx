@@ -7,7 +7,7 @@ import { GamePage } from './GamePage'
 describe('GamePage', () => {
   beforeEach(() => {
     window.localStorage.setItem(localeStorageKey, 'en')
-    window.localStorage.setItem(themeStorageKey, 'system')
+    window.localStorage.removeItem(themeStorageKey)
     document.documentElement.dataset.theme = 'light'
   })
 
@@ -28,6 +28,9 @@ describe('GamePage', () => {
 
     fireEvent.click(rollButton)
     expect(holdButton).toBeEnabled()
+    for (const die of screen.getAllByRole('img', { name: 'Die showing 5' })) {
+      expect(die).toHaveClass('animate-dice-roll')
+    }
     expect(screen.getByRole('status')).toHaveTextContent(
       'Player 1 rolled 10 and now has 10 this turn.',
     )
@@ -38,6 +41,7 @@ describe('GamePage', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'Player 1 banked 10 points and won with 10!',
     )
+    expect(screen.getByRole('article', { name: 'Player 1' })).toHaveClass('animate-player-win')
     expect(rollButton).toBeDisabled()
     expect(holdButton).toBeDisabled()
   })
@@ -88,6 +92,7 @@ describe('GamePage', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'Player 1 rolled two 6s and lost 8 banked points plus 0 turn points.',
     )
+    expect(screen.getByRole('article', { name: 'Player 1' })).toHaveClass('animate-player-loss')
     expect(
       screen.getByRole('heading', { level: 1, name: 'Player 2, your move.' }),
     ).toBeInTheDocument()
@@ -100,6 +105,7 @@ describe('GamePage', () => {
       </I18nProvider>,
     )
 
+    expect(screen.queryByRole('option', { name: 'System' })).not.toBeInTheDocument()
     fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), {
       target: { value: 'dark' },
     })

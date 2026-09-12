@@ -1,6 +1,9 @@
 import { useI18n } from '@/lib/i18n'
 
+export type PlayerFeedback = 'loss' | 'win' | null
+
 type PlayerPanelProps = Readonly<{
+  feedback: PlayerFeedback
   isActive: boolean
   isWinner: boolean
   name: string
@@ -8,7 +11,14 @@ type PlayerPanelProps = Readonly<{
   turnScore: number
 }>
 
-export const PlayerPanel = ({ isActive, isWinner, name, score, turnScore }: PlayerPanelProps) => {
+export const PlayerPanel = ({
+  feedback,
+  isActive,
+  isWinner,
+  name,
+  score,
+  turnScore,
+}: PlayerPanelProps) => {
   const { t } = useI18n()
   const stateClassName = isWinner
     ? 'border-accent bg-accent-surface'
@@ -25,12 +35,14 @@ export const PlayerPanel = ({ isActive, isWinner, name, score, turnScore }: Play
     : isActive
       ? t('player.active')
       : t('player.waiting')
+  const animationClassName =
+    feedback === 'win' ? 'animate-player-win' : feedback === 'loss' ? 'animate-player-loss' : ''
 
   return (
     <article
       aria-label={name}
       aria-current={isActive && !isWinner ? 'true' : undefined}
-      class={`grid min-h-64 content-between gap-8 rounded-card border-2 p-6 shadow-subtle transition-colors ${stateClassName}`}
+      class={`grid min-h-64 content-between gap-8 rounded-card border-2 p-6 shadow-subtle transition-colors will-change-transform ${stateClassName} ${animationClassName}`}
     >
       <div class="flex flex-wrap items-center justify-between gap-3">
         <h3 class="font-display text-xl font-bold">{name}</h3>

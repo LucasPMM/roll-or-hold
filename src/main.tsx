@@ -6,6 +6,8 @@ import { App } from './App'
 import './styles/index.css'
 
 const appRoot = document.getElementById('app')
-if (!appRoot) throw new Error('Application root was not found.')
+if (!appRoot) {
+  throw new Error('Application root was not found.')
+}
 
 render(<App />, appRoot)

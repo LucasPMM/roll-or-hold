@@ -7,7 +7,7 @@ import { App } from './App'
 describe('App', () => {
   beforeEach(() => {
     window.localStorage.setItem(localeStorageKey, 'en')
-    window.localStorage.setItem(themeStorageKey, 'system')
+    window.localStorage.removeItem(themeStorageKey)
   })
 
   it('renders the application main landmark', () => {

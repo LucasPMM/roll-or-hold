@@ -30,9 +30,10 @@ the result through an appropriate live announcement.
 ### Interface requirements
 
 - Support phone, tablet, and desktop layouts without horizontal overflow, starting at 320px wide.
-- Provide System, Light, and Dark theme choices with equivalent hierarchy and contrast.
-- Provide English and Brazilian Portuguese, detect browser preferences on first visit, and persist
-  explicit user choices.
+- Follow the system color scheme until the player explicitly chooses Light or Dark, then persist
+  that choice with equivalent hierarchy and contrast in both themes.
+- Provide English and Brazilian Portuguese, prefer an explicit saved choice, otherwise detect the
+  browser language, and fall back to English.
 - Keep game status, the active player, banked scores, unbanked score, dice results, winning target,
   and primary actions visible and understandable.
 - Remain fully usable with a keyboard, visible focus, reduced motion, and enlarged text.
@@ -94,8 +95,9 @@ pnpm preview
 ```
 
 The build output is written to `dist/` and uses `/roll-or-hold/` as its GitHub Pages project path.
-The deployment workflow, production URL, and representative screenshots will be added after the
-finished application has been reviewed.
+The GitHub Pages workflow deploys the verified `dist/` artifact from `master`. The production URL
+and representative desktop and mobile screenshots will be added after the repository has been
+renamed and the finished application has been reviewed.
 
 ## Development policy
 

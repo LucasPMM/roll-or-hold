@@ -6,29 +6,54 @@ export const fallbackLocale: Locale = 'en'
 export const localeStorageKey = 'roll-or-hold.locale'
 
 export const resolveLocale = (candidate: string | null | undefined): Locale | null => {
-  if (!candidate) return null
+  if (!candidate) {
+    return null
+  }
 
   const normalizedLocale = candidate.toLowerCase()
-  if (normalizedLocale === 'pt' || normalizedLocale.startsWith('pt-')) return 'pt-BR'
-  if (normalizedLocale === 'en' || normalizedLocale.startsWith('en-')) return 'en'
+  if (normalizedLocale === 'pt' || normalizedLocale.startsWith('pt-')) {
+    return 'pt-BR'
+  }
+  if (normalizedLocale === 'en' || normalizedLocale.startsWith('en-')) {
+    return 'en'
+  }
 
   return null
 }
 
-export const detectLocale = (): Locale => {
-  if (typeof window === 'undefined') return fallbackLocale
-
-  try {
-    const storedLocale = resolveLocale(window.localStorage.getItem(localeStorageKey))
-    if (storedLocale) return storedLocale
-  } catch {
-    // Storage can be unavailable for privacy or security reasons.
+export const selectLocale = (
+  storedLocale: string | null,
+  browserLocales: readonly string[],
+): Locale => {
+  const resolvedStoredLocale = resolveLocale(storedLocale)
+  if (resolvedStoredLocale) {
+    return resolvedStoredLocale
   }
 
-  for (const browserLocale of window.navigator.languages) {
-    const locale = resolveLocale(browserLocale)
-    if (locale) return locale
+  for (const browserLocale of browserLocales) {
+    const resolvedBrowserLocale = resolveLocale(browserLocale)
+    if (resolvedBrowserLocale) {
+      return resolvedBrowserLocale
+    }
   }
 
-  return resolveLocale(window.navigator.language) ?? fallbackLocale
+  return fallbackLocale
 }
+
+export const detectLocale = (): Locale => {
+  if (typeof window === 'undefined') {
+    return fallbackLocale
+  }
+
+  let storedLocale: string | null = null
+  try {
+    storedLocale = window.localStorage.getItem(localeStorageKey)
+  } catch (error) {
+    reportRecoverableError('Unable to read the saved language preference.', error)
+  }
+
+  const browserLocales = [...window.navigator.languages, window.navigator.language]
+  return selectLocale(storedLocale, browserLocales)
+}
+
+import { reportRecoverableError } from '@/lib/errors'
