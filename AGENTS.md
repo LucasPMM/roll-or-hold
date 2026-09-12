@@ -48,6 +48,8 @@
 - Give reusable library and feature folders an `index.ts` public entry point.
 - Keep files focused and prefer small named helpers, immutable state transitions, guard clauses,
   and explicit types.
+- Avoid `else` and `else if`; use guard clauses, early returns, and focused helpers instead.
+- Use the shared `ShouldRender` component for conditional JSX visibility.
 - Always use braces around conditional and loop bodies, including single-statement branches.
 - Never swallow an exception. Every caught error must be reported or translated into an explicit,
   documented recovery path.

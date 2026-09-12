@@ -1,4 +1,5 @@
 import type { JSX } from 'preact'
+import { ShouldRender } from '@/components/ShouldRender'
 import { useI18n } from '@/lib/i18n'
 
 type NewGameFormProps = Readonly<{
@@ -42,15 +43,16 @@ export const NewGameForm = ({ errorMessage, onSubmit, score, setScore }: NewGame
           type="number"
           value={score}
         />
-        {errorMessage ? (
+        <ShouldRender if={errorMessage !== null}>
           <span class="text-sm font-semibold text-accent-strong" id="winning-score-error">
             {errorMessage}
           </span>
-        ) : (
+        </ShouldRender>
+        <ShouldRender if={errorMessage === null}>
           <span class="text-sm font-medium text-muted-foreground" id="winning-score-help">
             {t('setup.help')}
           </span>
-        )}
+        </ShouldRender>
       </div>
       <button
         class="min-h-12 rounded-pill bg-foreground px-6 py-3 font-bold text-canvas transition-transform hover:-translate-y-0.5"

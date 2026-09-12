@@ -1,4 +1,5 @@
 import type { JSX } from 'preact'
+import { ShouldRender } from '@/components/ShouldRender'
 import type { DiceRoll, DieValue } from '@/features/game'
 import { useI18n } from '@/lib/i18n'
 
@@ -47,6 +48,7 @@ type DieProps = Readonly<{
 const Die = ({ animate, hasDelay = false, value }: DieProps) => {
   const { t } = useI18n()
   const label = value ? t('dice.value', { value }) : t('dice.waiting')
+  const pipLayout = value ? pipLayouts[value] : []
   const animationClassName = animate
     ? `animate-dice-roll ${hasDelay ? '[animation-delay:70ms]' : ''}`
     : ''
@@ -54,29 +56,30 @@ const Die = ({ animate, hasDelay = false, value }: DieProps) => {
   return (
     <div
       aria-label={label}
-      class={`grid size-16 shrink-0 grid-cols-3 grid-rows-3 rounded-xl border border-border bg-surface p-2.5 shadow-subtle will-change-transform sm:size-24 sm:rounded-2xl sm:p-4 ${animationClassName}`}
+      class={`grid size-[64px] shrink-0 grid-cols-3 grid-rows-3 rounded-[12px] border border-border bg-surface p-[10px] shadow-subtle will-change-transform sm:size-24 sm:rounded-2xl sm:p-4 ${animationClassName}`}
       role="img"
     >
-      {value ? (
-        pipLayouts[value].map(([column, row]) => {
+      <ShouldRender if={value !== null}>
+        {pipLayout.map(([column, row]) => {
           const style: JSX.CSSProperties = { gridColumn: column, gridRow: row }
           return (
             <span
               aria-hidden="true"
-              class="size-2.5 place-self-center rounded-full bg-foreground sm:size-3.5"
+              class="size-[10px] place-self-center rounded-full bg-foreground sm:size-3.5"
               key={`${column}-${row}`}
               style={style}
             />
           )
-        })
-      ) : (
+        })}
+      </ShouldRender>
+      <ShouldRender if={value === null}>
         <span
           aria-hidden="true"
           class="col-span-3 row-span-3 place-self-center text-2xl font-bold text-muted-foreground sm:text-3xl"
         >
           ?
         </span>
-      )}
+      </ShouldRender>
     </div>
   )
 }
@@ -92,9 +95,9 @@ export const Dice = ({ animate, roll }: DiceProps) => {
   return (
     <figure
       aria-label={t('dice.groupLabel')}
-      class="grid justify-items-center gap-2 rounded-2xl bg-surface-muted px-3 py-3 sm:gap-4 sm:rounded-card sm:px-4 sm:py-6"
+      class="grid justify-items-center gap-[8px] rounded-[16px] bg-surface-muted px-[12px] py-[12px] sm:gap-4 sm:rounded-card sm:px-4 sm:py-6"
     >
-      <div class="flex gap-3">
+      <div class="flex gap-[12px]">
         <Die animate={animate} value={roll?.[0] ?? null} />
         <Die animate={animate} hasDelay value={roll?.[1] ?? null} />
       </div>

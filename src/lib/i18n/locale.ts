@@ -1,3 +1,5 @@
+import { reportRecoverableError } from '@/lib/errors'
+
 export const supportedLocales = ['en', 'pt-BR'] as const
 
 export type Locale = (typeof supportedLocales)[number]
@@ -40,20 +42,25 @@ export const selectLocale = (
   return fallbackLocale
 }
 
+const getStoredLocale = (): string | null => {
+  if (typeof window === 'undefined') {
+    return null
+  }
+
+  try {
+    return window.localStorage.getItem(localeStorageKey)
+  } catch (error) {
+    reportRecoverableError('Unable to read the saved language preference.', error)
+    return null
+  }
+}
+
 export const detectLocale = (): Locale => {
   if (typeof window === 'undefined') {
     return fallbackLocale
   }
 
-  let storedLocale: string | null = null
-  try {
-    storedLocale = window.localStorage.getItem(localeStorageKey)
-  } catch (error) {
-    reportRecoverableError('Unable to read the saved language preference.', error)
-  }
-
+  const storedLocale = getStoredLocale()
   const browserLocales = [...window.navigator.languages, window.navigator.language]
   return selectLocale(storedLocale, browserLocales)
 }
-
-import { reportRecoverableError } from '@/lib/errors'

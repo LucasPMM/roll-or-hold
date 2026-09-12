@@ -44,8 +44,10 @@ export const PlayerPanel = ({
       aria-current={isActive && !isWinner ? 'true' : undefined}
       class={`grid min-w-0 content-between gap-4 rounded-2xl border-2 p-3 shadow-subtle transition-colors will-change-transform sm:min-h-64 sm:gap-8 sm:rounded-card sm:p-6 ${stateClassName} ${animationClassName}`}
     >
-      <div class="grid min-w-0 justify-items-start gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
-        <h3 class="max-w-full truncate font-display text-base font-bold sm:text-xl">{name}</h3>
+      <div class="grid min-w-0 w-full justify-items-start gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
+        <h3 class="min-w-0 w-full truncate font-display text-base font-bold sm:w-auto sm:text-xl">
+          {name}
+        </h3>
         <span
           class={`rounded-pill px-2 py-0.5 text-[0.625rem] font-bold sm:px-3 sm:py-1 sm:text-xs ${badgeClassName}`}
         >

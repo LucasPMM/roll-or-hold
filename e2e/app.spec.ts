@@ -26,6 +26,21 @@ test('keeps the application free of horizontal overflow', async ({ page }) => {
   }
 })
 
+test('reflows without horizontal overflow when text is enlarged to 200 percent', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 900 })
+  await page.goto('./')
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = '200%'
+  })
+
+  const hasOverflow = await page.evaluate(
+    () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
+  )
+  expect(hasOverflow).toBe(false)
+})
+
 test('keeps both scorecards and primary actions side by side on small screens', async ({
   page,
 }) => {

@@ -1,5 +1,6 @@
 import type { JSX } from 'preact'
 import { useEffect, useId, useRef, useState } from 'preact/hooks'
+import { ShouldRender } from '@/components/ShouldRender'
 
 export type PreferenceOption<Value extends string> = Readonly<{
   label: string
@@ -84,10 +85,14 @@ export const PreferenceSelect = <Value extends string>({
     if (event.key === 'ArrowDown') {
       event.preventDefault()
       openOptions('first')
-    } else if (event.key === 'ArrowUp') {
+      return
+    }
+    if (event.key === 'ArrowUp') {
       event.preventDefault()
       openOptions('last')
-    } else if (event.key === 'Escape' && isOpen) {
+      return
+    }
+    if (event.key === 'Escape' && isOpen) {
       event.preventDefault()
       closeOptions()
     }
@@ -146,7 +151,7 @@ export const PreferenceSelect = <Value extends string>({
       >
         {label}
       </span>
-      <span class="relative block text-foreground">
+      <span class="relative block min-w-0 text-foreground">
         <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
           <PreferenceIcon icon={icon} />
         </span>
@@ -155,7 +160,7 @@ export const PreferenceSelect = <Value extends string>({
           aria-expanded={isOpen}
           aria-haspopup="listbox"
           aria-label={label}
-          class="min-h-10 w-full rounded-2xl border border-border bg-surface py-2 pl-9 pr-8 text-left text-sm font-bold shadow-subtle transition-colors hover:border-border-strong sm:min-h-11 sm:py-2.5 sm:pl-10 sm:pr-9"
+          class="min-h-10 min-w-0 w-full rounded-2xl border border-border bg-surface py-[8px] pl-[36px] pr-[32px] text-left text-sm font-bold shadow-subtle transition-colors hover:border-border-strong sm:min-h-11 sm:py-2.5 sm:pl-10 sm:pr-9"
           onClick={() => (isOpen ? closeOptions() : openOptions())}
           onKeyDown={handleTriggerKeyDown}
           ref={triggerRef}
@@ -173,7 +178,7 @@ export const PreferenceSelect = <Value extends string>({
         </svg>
       </span>
 
-      {isOpen ? (
+      <ShouldRender if={isOpen}>
         <div
           aria-labelledby={`${controlId}-label`}
           class={`absolute top-full z-50 mt-2 grid min-w-40 overflow-hidden rounded-2xl border border-border bg-surface p-1.5 text-foreground shadow-subtle ${
@@ -209,7 +214,7 @@ export const PreferenceSelect = <Value extends string>({
             )
           })}
         </div>
-      ) : null}
+      </ShouldRender>
     </div>
   )
 }
