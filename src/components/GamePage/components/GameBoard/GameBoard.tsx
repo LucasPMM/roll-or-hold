@@ -40,7 +40,10 @@ export const GameBoard = ({
   const { t } = useI18n()
 
   return (
-    <section aria-labelledby="game-board-title" class="grid gap-4 md:grid-cols-[1fr_auto_1fr]">
+    <section
+      aria-labelledby="game-board-title"
+      class="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-[1fr_auto_1fr]"
+    >
       <h2 class="sr-only" id="game-board-title">
         {t('game.boardLabel')}
       </h2>
@@ -52,7 +55,7 @@ export const GameBoard = ({
         score={scores[0]}
         turnScore={activePlayer === 0 && winner === null ? turnScore : 0}
       />
-      <div class="grid place-items-center py-2 md:px-2 md:py-0">
+      <div class="order-3 col-span-2 grid place-items-center py-1 md:order-none md:col-span-1 md:px-2 md:py-0">
         <Dice animate={lastRoll !== null} key={diceAnimationKey} roll={lastRoll} />
       </div>
       <PlayerPanel

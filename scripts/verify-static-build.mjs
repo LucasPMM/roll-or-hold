@@ -7,12 +7,13 @@ const indexHtml = readFileSync(join(distributionDirectory, 'index.html'), 'utf8'
 const requiredFragments = [
   'id="app"',
   'Roll or Hold',
+  '/roll-or-hold/favicon.ico?v=3',
   '/roll-or-hold/favicon.svg',
   '/roll-or-hold/site.webmanifest',
   '/roll-or-hold/assets/',
 ]
 const missingFragments = requiredFragments.filter((fragment) => !indexHtml.includes(fragment))
-const requiredFiles = ['favicon.svg', 'site.webmanifest']
+const requiredFiles = ['favicon.ico', 'favicon.svg', 'site.webmanifest']
 const missingFiles = requiredFiles.filter(
   (fileName) => !existsSync(join(distributionDirectory, fileName)),
 )

@@ -97,17 +97,19 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
       <AppHeader />
 
       <main
-        class="mx-auto grid max-w-page gap-8 px-4 py-8 sm:px-6 sm:py-12 lg:px-8"
+        class="mx-auto grid max-w-page gap-5 px-3 py-5 sm:gap-8 sm:px-6 sm:py-10 lg:px-8"
         id="main-content"
       >
-        <section class="grid gap-5 text-center">
-          <div class="mx-auto rounded-pill bg-accent-surface px-4 py-2 text-sm font-bold text-foreground">
+        <section class="grid gap-3 text-center sm:gap-5">
+          <div class="mx-auto rounded-pill bg-accent-surface px-4 py-1.5 text-xs font-bold text-foreground sm:py-2 sm:text-sm">
             {t('game.target', { score: state.winningScore })}
           </div>
           <div class="mx-auto max-w-3xl">
-            <p class="mb-3 text-sm font-bold text-accent-strong">{t('game.eyebrow')}</p>
+            <p class="mb-2 text-xs font-bold text-accent-strong sm:mb-3 sm:text-sm">
+              {t('game.eyebrow')}
+            </p>
             <h1
-              class={`font-display text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl ${
+              class={`font-display text-3xl font-bold leading-tight sm:text-5xl lg:text-6xl ${
                 isWinner ? 'animate-player-win' : ''
               }`}
             >
@@ -115,7 +117,7 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
                 ? t('game.winnerTitle', { player: winnerName })
                 : t('game.turnTitle', { player: currentPlayerName })}
             </h1>
-            <p class="mx-auto mt-4 max-w-2xl text-base font-medium text-muted-foreground sm:text-lg">
+            <p class="mx-auto mt-2 max-w-2xl text-sm font-medium text-muted-foreground sm:mt-4 sm:text-lg">
               {t('game.introduction')}
             </p>
           </div>
@@ -132,7 +134,7 @@ export const GamePage = ({ randomSource = Math.random }: GamePageProps) => {
           winner={state.winner}
         />
 
-        <div class="mx-auto grid w-full max-w-2xl gap-4">
+        <div class="mx-auto grid w-full max-w-2xl gap-3 sm:gap-4">
           <GameStatus
             isWinner={isWinner}
             message={getStatusMessage(state.lastEvent, playerNames, t)}

@@ -53,9 +53,8 @@ describe('GamePage', () => {
       </I18nProvider>,
     )
 
-    fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
-      target: { value: 'pt-BR' },
-    })
+    fireEvent.click(screen.getByRole('button', { name: 'Language' }))
+    fireEvent.click(screen.getByRole('option', { name: 'Português' }))
 
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Jogador 1, é a sua vez.' }),
@@ -105,10 +104,9 @@ describe('GamePage', () => {
       </I18nProvider>,
     )
 
+    fireEvent.click(screen.getByRole('button', { name: 'Theme' }))
     expect(screen.queryByRole('option', { name: 'System' })).not.toBeInTheDocument()
-    fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), {
-      target: { value: 'dark' },
-    })
+    fireEvent.click(screen.getByRole('option', { name: 'Dark' }))
 
     await waitFor(() => expect(document.documentElement.dataset.theme).toBe('dark'))
     expect(window.localStorage.getItem(themeStorageKey)).toBe('dark')

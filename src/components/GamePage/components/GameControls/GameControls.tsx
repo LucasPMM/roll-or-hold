@@ -8,13 +8,13 @@ type GameControlsProps = Readonly<{
 }>
 
 const buttonBaseClassName =
-  'min-h-12 rounded-pill px-6 py-3 text-base font-bold transition-transform enabled:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40'
+  'min-h-12 rounded-pill px-3 py-3 text-sm font-bold transition-transform enabled:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40 sm:px-6 sm:text-base'
 
 export const GameControls = ({ canHold, canRoll, onHold, onRoll }: GameControlsProps) => {
   const { t } = useI18n()
 
   return (
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div class="grid grid-cols-2 gap-2 sm:gap-3">
       <button
         class={`${buttonBaseClassName} bg-accent text-accent-foreground shadow-subtle`}
         disabled={!canRoll}
