@@ -2,6 +2,9 @@
   "name": "roll-or-hold",
   "version": "0.1.0",
   "private": true,
+  "description": "A local two-player dice game about balancing risk and reward.",
+  "homepage": "https://lucaspmm.github.io/roll-or-hold/",
+  "repository": "https://github.com/LucasPMM/roll-or-hold.git",
   "type": "module",
   "packageManager": "pnpm@10.33.4",
   "engines": {

@@ -22,9 +22,9 @@ export const AppHeader = () => {
           <img
             alt=""
             aria-hidden="true"
-            class="size-10 rounded-xl shadow-subtle sm:size-11 sm:rounded-2xl"
+            class="size-10 rounded-xl bg-accent p-1 shadow-subtle sm:size-11 sm:rounded-2xl"
             height="44"
-            src={`${import.meta.env.BASE_URL}favicon.svg?v=3`}
+            src={`${import.meta.env.BASE_URL}favicon.svg?v=4`}
             width="44"
           />
           <div>

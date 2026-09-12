@@ -79,7 +79,7 @@ test('serves a browser-compatible favicon from the Pages base path', async ({ pa
     .locator('link[rel="icon"][href*="favicon.ico"]')
     .first()
     .getAttribute('href')
-  expect(faviconHref).toBe('/roll-or-hold/favicon.ico?v=3')
+  expect(faviconHref).toBe('/roll-or-hold/favicon.ico?v=4')
 
   const faviconResponse = await page.request.get(new URL(faviconHref ?? '', page.url()).href)
   expect(faviconResponse.ok()).toBe(true)
