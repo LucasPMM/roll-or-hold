@@ -43,7 +43,7 @@ the result through an appropriate live announcement.
 
 - Preact, TypeScript, and Vite
 - i18next with typed English and Brazilian Portuguese catalogs
-- Native CSS with semantic light and dark theme tokens
+- Tailwind CSS 4 with semantic light and dark theme tokens
 - Vitest and Testing Library for unit and component tests
 - Playwright and axe for browser, responsive, and accessibility checks
 - Biome for linting and formatting

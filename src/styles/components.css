@@ -1,5 +1,0 @@
-.game-page {
-  width: min(calc(100% - 2 * var(--page-gutter)), var(--page-width));
-  min-height: 100vh;
-  margin-inline: auto;
-}
